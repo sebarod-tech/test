@@ -607,17 +607,17 @@ function renderPartidoRow(pt, container) {
 // ============================================================
 // RENDER SECCIONES
 // ============================================================
-function renderArgPartidos() {
-  const cont=document.getElementById('arg-partidos');
-  cont.innerHTML='';
-  PARTIDOS_GRUPOS.filter(p=>p.h==='Argentina'||p.v==='Argentina').forEach(pt=>{
-    const b=document.createElement('div'); b.className='arg-match-banner';
-    b.innerHTML=`🇦🇷 Grupo J &nbsp;·&nbsp; ${pt.fecha} &nbsp;·&nbsp; ${pt.hora} hs &nbsp;·&nbsp; ${pt.sede}`;
-    cont.appendChild(b);
-    const w=document.createElement('div'); renderPartidoRow(pt,w); cont.appendChild(w);
-  });
-  renderTabla('tabla-grupoJ-arg','J',true);
-}
+//function renderArgPartidos() {
+//  const cont=document.getElementById('arg-partidos');
+//  cont.innerHTML='';
+//  PARTIDOS_GRUPOS.filter(p=>p.h==='Argentina'||p.v==='Argentina').forEach(pt=>{
+//    const b=document.createElement('div'); b.className='arg-match-banner';
+//    b.innerHTML=`🇦🇷 Grupo J &nbsp;·&nbsp; ${pt.fecha} &nbsp;·&nbsp; ${pt.hora} hs &nbsp;·&nbsp; ${pt.sede}`;
+//    cont.appendChild(b);
+//    const w=document.createElement('div'); renderPartidoRow(pt,w); cont.appendChild(w);
+//  });
+//  renderTabla('tabla-grupoJ-arg','J',true);
+//}
 
 function renderGrupos() {
   const cont=document.getElementById('grupos-container'); cont.innerHTML='';
