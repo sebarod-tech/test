@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mundial 2026 en vivo</title>
+  <link rel="preconnect" href="https://api.football-data.org">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">FIFA World Cup 2026</p>
+        <h1>Mundial 2026</h1>
+      </div>
+      <div class="status-card" id="syncStatus">
+        <span class="pulse"></span>
+        Esperando token
+      </div>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <p class="eyebrow">Datos desde football-data.org</p>
+          <h2>Resultados, grupos, fases, fixture y estadísticas en vivo.</h2>
+          <p>
+            Ingresá tu API token y la página consulta el Mundial 2026 en tiempo real. El token queda guardado solo en este navegador.
+          </p>
+        </div>
+        <form class="token-panel" id="tokenForm">
+          <label for="tokenInput">API token</label>
+          <div class="token-row">
+            <input id="tokenInput" name="token" type="password" autocomplete="off" placeholder="Pegá tu X-Auth-Token">
+            <button type="submit">Conectar</button>
+          </div>
+          <div class="settings-row">
+            <label>
+              <span>Temporada</span>
+              <input id="seasonInput" type="number" min="2026" max="2030" value="2026">
+            </label>
+            <button type="button" class="ghost" id="refreshBtn">Actualizar</button>
+          </div>
+          <p class="hint">La API de football-data.org exige token. Si el navegador bloquea la llamada por CORS, usá un proxy propio y configurá su URL abajo.</p>
+          <label for="proxyInput">Proxy opcional</label>
+          <input id="proxyInput" type="url" placeholder="https://tu-proxy.com">
+        </form>
+      </section>
+
+      <section class="summary-grid" aria-label="Resumen">
+        <article>
+          <span id="totalMatches">0</span>
+          <p>Partidos</p>
+        </article>
+        <article>
+          <span id="liveMatches">0</span>
+          <p>En curso</p>
+        </article>
+        <article>
+          <span id="finishedMatches">0</span>
+          <p>Finalizados</p>
+        </article>
+        <article>
+          <span id="nextMatch">-</span>
+          <p>Próximo partido</p>
+        </article>
+      </section>
+
+      <nav class="tabs" aria-label="Secciones">
+        <button class="active" data-tab="matches">Partidos</button>
+        <button data-tab="live">En vivo</button>
+        <button data-tab="groups">Grupos</button>
+        <button data-tab="phases">Fases</button>
+        <button data-tab="stats">Estadísticas</button>
+      </nav>
+
+      <section class="filters">
+        <label>
+          Buscar
+          <input id="searchInput" type="search" placeholder="Equipo, sede, fase...">
+        </label>
+        <label>
+          Estado
+          <select id="statusFilter">
+            <option value="ALL">Todos</option>
+            <option value="SCHEDULED">Programados</option>
+            <option value="TIMED">Con horario</option>
+            <option value="IN_PLAY">En juego</option>
+            <option value="PAUSED">Entretiempo</option>
+            <option value="FINISHED">Finalizados</option>
+          </select>
+        </label>
+        <label>
+          Fase
+          <select id="stageFilter">
+            <option value="ALL">Todas</option>
+          </select>
+        </label>
+      </section>
+
+      <section class="panel active" id="matchesPanel">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Fixture y resultados</p>
+            <h3>Partidos del Mundial</h3>
+          </div>
+          <span id="matchCount">0 partidos</span>
+        </div>
+        <div class="match-list" id="matchesList"></div>
+      </section>
+
+      <section class="panel" id="livePanel">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Minuto a minuto</p>
+            <h3>Partidos en curso</h3>
+          </div>
+          <span>Se actualiza cada 60 segundos</span>
+        </div>
+        <div class="match-list" id="liveList"></div>
+      </section>
+
+      <section class="panel" id="groupsPanel">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Tablas</p>
+            <h3>Grupos</h3>
+          </div>
+          <span id="groupsStatus">Sin datos cargados</span>
+        </div>
+        <div class="groups-grid" id="groupsGrid"></div>
+      </section>
+
+      <section class="panel" id="phasesPanel">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Camino al título</p>
+            <h3>Fases del Mundial</h3>
+          </div>
+          <span id="phasesStatus">0 fases</span>
+        </div>
+        <div class="phase-board" id="phaseBoard"></div>
+      </section>
+
+      <section class="panel" id="statsPanel">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">Indicadores</p>
+            <h3>Estadísticas generales</h3>
+          </div>
+          <span id="statsStatus">Calculadas desde partidos y detalle</span>
+        </div>
+        <div class="stats-grid" id="statsGrid"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="matchDialog">
+    <div class="dialog-head">
+      <div>
+        <p class="eyebrow" id="dialogStage">Detalle</p>
+        <h3 id="dialogTitle">Partido</h3>
+      </div>
+      <button class="icon-btn" id="closeDialog" aria-label="Cerrar">x</button>
+    </div>
+    <div id="dialogBody"></div>
+  </dialog>
+
+  <template id="emptyTemplate">
+    <div class="empty-state">
+      <strong>No hay datos para mostrar todavía.</strong>
+      <p>Conectá la API o cambiá los filtros.</p>
+    </div>
+  </template>
+
+  <script src="./app.js"></script>
+</body>
+</html>
