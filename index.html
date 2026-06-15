@@ -23,13 +23,29 @@
     <main>
       <section class="hero">
         <div class="hero-copy">
-          <p class="eyebrow">Datos desde football-data.org</p>
-          <h2>Resultados, grupos, fases, fixture y estadísticas en vivo.</h2>
+          <div class="hero-kicker">
+            <span>Copa Mundial FIFA 2026</span>
+            <span>Argentina UTC-3</span>
+          </div>
+          <h2>El Mundial, partido a partido.</h2>
           <p>
-            Ingresá tu API token y la página consulta el Mundial 2026 en tiempo real. El token queda guardado solo en este navegador.
+            Fixture, resultados, grupos, fases y datos en vivo en una vista pensada para seguir la copa sin perderse nada.
           </p>
+          <div class="hero-actions" aria-label="Accesos rápidos">
+            <button type="button" data-jump="matches">Ver partidos</button>
+            <button type="button" class="light" data-jump="groups">Ver grupos</button>
+          </div>
+          <div class="hero-notes">
+            <span>104 partidos</span>
+            <span>48 selecciones</span>
+            <span>16 sedes</span>
+          </div>
         </div>
         <form class="token-panel" id="tokenForm">
+          <div class="token-title">
+            <span>Conexión de datos</span>
+            <strong>football-data.org</strong>
+          </div>
           <label for="tokenInput">API token</label>
           <div class="token-row">
             <input id="tokenInput" name="token" type="password" autocomplete="off" placeholder="Pegá tu X-Auth-Token">
@@ -42,7 +58,7 @@
             </label>
             <button type="button" class="ghost" id="refreshBtn">Actualizar</button>
           </div>
-          <p class="hint">La API de football-data.org exige token. Si el navegador bloquea la llamada por CORS, usá un proxy propio y configurá su URL abajo.</p>
+          <p class="hint">Para GitHub Pages, usá el proxy público y dejá el token guardado como secreto en Cloudflare.</p>
           <label for="proxyInput">Proxy opcional</label>
           <input id="proxyInput" type="url" placeholder="https://tu-proxy.com">
         </form>
@@ -174,7 +190,6 @@
     </div>
   </template>
 
-  <script src="./app.js?v=2"></script>
+  <script src="./app.js?v=3"></script>
 </body>
 </html>
-
