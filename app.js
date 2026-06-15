@@ -1,5 +1,6 @@
 const API_ROOT = "https://api.football-data.org/v4";
 const COMPETITION = "WC";
+const DISPLAY_TIME_ZONE = "America/Argentina/Buenos_Aires";
 const LIVE_STATUSES = new Set(["IN_PLAY", "PAUSED"]);
 const STORE_KEY = "mundial2026.settings";
 
@@ -458,6 +459,7 @@ function formatScore(match) {
 function formatDate(value) {
   if (!value) return "-";
   return new Intl.DateTimeFormat("es-AR", {
+    timeZone: DISPLAY_TIME_ZONE,
     weekday: "short",
     day: "2-digit",
     month: "short",
@@ -468,6 +470,7 @@ function formatDate(value) {
 
 function formatShortDate(value) {
   return new Intl.DateTimeFormat("es-AR", {
+    timeZone: DISPLAY_TIME_ZONE,
     day: "2-digit",
     month: "short",
     hour: "2-digit",
@@ -566,12 +569,23 @@ els.refreshBtn.addEventListener("click", () => {
 
 els.tabs.forEach((tab) => {
   tab.addEventListener("click", () => {
-    state.selectedTab = tab.dataset.tab;
-    els.tabs.forEach((item) => item.classList.toggle("active", item === tab));
-    document.querySelectorAll(".panel").forEach((panel) => panel.classList.remove("active"));
-    document.querySelector(`#${state.selectedTab}Panel`).classList.add("active");
+    selectTab(tab.dataset.tab);
   });
 });
+
+document.querySelectorAll("[data-jump]").forEach((button) => {
+  button.addEventListener("click", () => {
+    selectTab(button.dataset.jump);
+    document.querySelector(".tabs").scrollIntoView({ behavior: "smooth", block: "start" });
+  });
+});
+
+function selectTab(tabName) {
+  state.selectedTab = tabName;
+  els.tabs.forEach((item) => item.classList.toggle("active", item.dataset.tab === tabName));
+  document.querySelectorAll(".panel").forEach((panel) => panel.classList.remove("active"));
+  document.querySelector(`#${state.selectedTab}Panel`).classList.add("active");
+}
 
 els.searchInput.addEventListener("input", () => {
   state.search = els.searchInput.value;
