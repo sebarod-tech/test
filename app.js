@@ -184,6 +184,10 @@ function renderSummary() {
   els.liveMatches.textContent = live.length;
   els.finishedMatches.textContent = finished.length;
   els.nextMatch.textContent = next ? formatShortDate(next.utcDate) : "-";
+
+  document.querySelector("#heroTotalMatches").textContent = state.matches.length;
+  document.querySelector("#heroLiveMatches").textContent = live.length;
+  document.querySelector("#heroNextMatch").textContent = next ? `${next.homeTeam?.name || "Local"} vs ${next.awayTeam?.name || "Visitante"}` : "Conectá datos";
 }
 
 function renderMatches() {
