@@ -1,0 +1,5 @@
+{
+    "check_interval": 300,
+    "warning_threshold": 40,
+    "offline_threshold": 70
+}
